@@ -224,6 +224,41 @@ CONTENT['1.2.1'] = () => String.raw`
 <div class="page-subtitle">1.2 정규 분포 — 자연계에서 가장 자주 등장하는 분포</div>
 
 <div class="section">
+  <div class="section-title"><span class="icon">🌐</span> 확률 분포의 다양한 종류</div>
+  <p>세상에는 수많은 확률 분포가 있습니다. 각각은 고유한 <strong>모양과 적용 분야</strong>를 가집니다. 아래 4가지 대표적인 분포를 비교해 보세요.</p>
+  <div class="interactive-panel">
+    <div class="panel-header">📊 주요 확률 분포 모양 비교</div>
+    <div class="panel-body" style="flex-direction:column;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;">
+        <div>
+          <div style="text-align:center;font-size:0.82rem;font-weight:700;color:#3b82f6;margin-bottom:5px;">균등 분포 Uniform(0, 1)</div>
+          <canvas id="dist-uniform" height="160"></canvas>
+          <div style="font-size:0.75rem;color:#64748b;text-align:center;margin-top:5px;">모든 구간이 동일한 확률 → 완전히 평탄</div>
+        </div>
+        <div>
+          <div style="text-align:center;font-size:0.82rem;font-weight:700;color:#8b5cf6;margin-bottom:5px;">이항 분포 Binomial(n=20, p=0.4)</div>
+          <canvas id="dist-binomial" height="160"></canvas>
+          <div style="font-size:0.75rem;color:#64748b;text-align:center;margin-top:5px;">성공 횟수 분포 → 좌우 대칭에 가까운 종 모양</div>
+        </div>
+        <div>
+          <div style="text-align:center;font-size:0.82rem;font-weight:700;color:#f59e0b;margin-bottom:5px;">포아송 분포 Poisson(λ=4)</div>
+          <canvas id="dist-poisson" height="160"></canvas>
+          <div style="font-size:0.75rem;color:#64748b;text-align:center;margin-top:5px;">단위 시간당 사건 발생 횟수 → 오른쪽 꼬리</div>
+        </div>
+        <div>
+          <div style="text-align:center;font-size:0.82rem;font-weight:700;color:#22c55e;margin-bottom:5px;">정규 분포 Normal(μ=0, σ=1)</div>
+          <canvas id="dist-normal-preview" height="160"></canvas>
+          <div style="font-size:0.75rem;color:#64748b;text-align:center;margin-top:5px;">자연·사회 현상 전반 → 완벽한 좌우 대칭 종 모양</div>
+        </div>
+      </div>
+      <div class="highlight-box" style="margin-top:14px;">
+        이 중 <strong>정규 분포</strong>가 가장 광범위하게 쓰입니다. 그 이유는 <a class="ch-link" href="#" onclick="loadSection('1.3.1',NAV[0],NAV[0].subs[2],NAV[0].subs[2].sections[0]);return false;">중심 극한 정리(1.3)</a>로 설명됩니다.
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
   <div class="section-title"><span class="icon">🔔</span> 정규 분포 (Gaussian Distribution)</div>
   <p>정규 분포는 <strong>평균 $\mu$</strong>와 <strong>표준편차 $\sigma$</strong> 두 매개변수만으로 결정되는 연속 확률 분포입니다. 종 모양(bell curve)의 대칭 분포입니다.</p>
   <div class="math-block">
@@ -285,6 +320,18 @@ CONTENT['1.2.1'] = () => String.raw`
 CONTENT['1.2.2'] = () => String.raw`
 <div class="page-title">정규 분포 시각화</div>
 <div class="page-subtitle">1.2 정규 분포 — 표준 정규 분포를 코드로 그려보기</div>
+
+<div class="section">
+  <div class="section-title"><span class="icon">🎬</span> 정규 분포 개념 영상</div>
+  <p>정규 분포의 핵심 개념을 직관적으로 이해할 수 있는 짧은 영상입니다.</p>
+  <div style="display:flex;justify-content:center;margin:20px 0;">
+    <iframe width="315" height="560"
+      src="https://www.youtube.com/embed/aqS9Yw1jAFw"
+      title="정규 분포 개념 시각화" frameborder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen style="border-radius:12px;"></iframe>
+  </div>
+</div>
 
 <div class="section">
   <div class="section-title"><span class="icon">💻</span> Python 코드</div>
@@ -710,6 +757,7 @@ CONTENT['1.5.1'] = () => String.raw`
    ============================================================ */
 CHART_INITS['1.1.1'] = init_dice;
 CHART_INITS['1.1.2'] = init_discrete_continuous;
+CHART_INITS['1.2.1'] = init_dist_types;
 CHART_INITS['1.2.2'] = init_normal_basic;
 CHART_INITS['1.2.3'] = init_param_explorer;
 CHART_INITS['1.3.2'] = init_clt_sim;
@@ -882,6 +930,123 @@ window.updateHeightRange = function() {
   const prob = numericalIntegral(lo, hi, x => normalPDF(x, MU, SIGMA), 500);
   document.getElementById('height-prob').textContent = (prob * 100).toFixed(1) + '%';
 };
+
+/* --- 1.2.1 Distribution types comparison --- */
+function init_dist_types() {
+  function binomPMF(k, n, p) {
+    if (k < 0 || k > n) return 0;
+    let lC = 0;
+    for (let i = 0; i < k; i++) lC += Math.log(n - i) - Math.log(i + 1);
+    return Math.exp(lC + k * Math.log(p) + (n - k) * Math.log(1 - p));
+  }
+  function poissonPMF(k, lam) {
+    let lF = 0;
+    for (let i = 2; i <= k; i++) lF += Math.log(i);
+    return Math.exp(-lam + (k > 0 ? k * Math.log(lam) : 0) - lF);
+  }
+
+  const commonOpts = {
+    responsive: true,
+    animation: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { ticks: { font: { size: 10 } }, grid: { display: false } },
+      y: { ticks: { font: { size: 10 } }, grid: { color: 'rgba(0,0,0,0.05)' } }
+    }
+  };
+
+  // Uniform(0, 1) — continuous, displayed as a bar chart
+  const ctxU = document.getElementById('dist-uniform');
+  if (ctxU) {
+    const xs = Array.from({ length: 10 }, (_, i) => (i * 0.1 + 0.05).toFixed(2));
+    activeChartInstances['du'] = new Chart(ctxU, {
+      type: 'bar',
+      data: {
+        labels: xs,
+        datasets: [{
+          data: xs.map(() => 1.0),
+          backgroundColor: 'rgba(59,130,246,0.55)',
+          borderColor: '#3b82f6',
+          borderWidth: 1,
+          barPercentage: 0.95,
+          categoryPercentage: 0.95
+        }]
+      },
+      options: { ...commonOpts, scales: { ...commonOpts.scales, y: { ...commonOpts.scales.y, min: 0, max: 1.5 } } }
+    });
+  }
+
+  // Binomial(n=20, p=0.4)
+  const ctxB = document.getElementById('dist-binomial');
+  if (ctxB) {
+    const ks = Array.from({ length: 21 }, (_, k) => k);
+    activeChartInstances['db'] = new Chart(ctxB, {
+      type: 'bar',
+      data: {
+        labels: ks.map(String),
+        datasets: [{
+          data: ks.map(k => binomPMF(k, 20, 0.4)),
+          backgroundColor: 'rgba(139,92,246,0.55)',
+          borderColor: '#8b5cf6',
+          borderWidth: 1,
+          barPercentage: 0.85,
+          categoryPercentage: 0.9
+        }]
+      },
+      options: commonOpts
+    });
+  }
+
+  // Poisson(λ=4)
+  const ctxP = document.getElementById('dist-poisson');
+  if (ctxP) {
+    const ks = Array.from({ length: 16 }, (_, k) => k);
+    activeChartInstances['dp'] = new Chart(ctxP, {
+      type: 'bar',
+      data: {
+        labels: ks.map(String),
+        datasets: [{
+          data: ks.map(k => poissonPMF(k, 4)),
+          backgroundColor: 'rgba(245,158,11,0.55)',
+          borderColor: '#f59e0b',
+          borderWidth: 1,
+          barPercentage: 0.85,
+          categoryPercentage: 0.9
+        }]
+      },
+      options: commonOpts
+    });
+  }
+
+  // Normal(μ=0, σ=1) — line chart
+  const ctxN = document.getElementById('dist-normal-preview');
+  if (ctxN) {
+    const xs = linspace(-4, 4, 120);
+    const ys = xs.map(x => normalPDF(x, 0, 1));
+    activeChartInstances['dn'] = new Chart(ctxN, {
+      type: 'line',
+      data: {
+        labels: xs.map(x => x.toFixed(1)),
+        datasets: [{
+          data: ys,
+          borderColor: '#22c55e',
+          backgroundColor: 'rgba(34,197,94,0.15)',
+          fill: true,
+          pointRadius: 0,
+          borderWidth: 2,
+          tension: 0.4
+        }]
+      },
+      options: {
+        ...commonOpts,
+        scales: {
+          x: { ...commonOpts.scales.x, ticks: { maxTicksLimit: 9, font: { size: 10 } } },
+          y: { ...commonOpts.scales.y }
+        }
+      }
+    });
+  }
+}
 
 /* --- 1.2.2 Normal basic with area --- */
 let normalBasicChart = null;
