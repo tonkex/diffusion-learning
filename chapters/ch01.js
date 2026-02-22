@@ -336,7 +336,7 @@ CONTENT['1.2.2'] = () => String.raw`
 <div class="section">
   <div class="section-title"><span class="icon">💻</span> Python 코드</div>
   <p>다음은 표준 정규 분포를 NumPy와 Matplotlib으로 그리는 코드입니다:</p>
-  <pre style="background:#1e293b;color:#e2e8f0;padding:16px;border-radius:8px;font-size:0.82rem;line-height:1.7;overflow-x:auto;"><code>import numpy as np
+  <pre class="code-pre"><code class="language-python">import numpy as np
 import matplotlib.pyplot as plt
 
 def normal(x, mu=0, sigma=1):

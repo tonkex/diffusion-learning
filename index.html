@@ -12,6 +12,8 @@ MathJax = {
 </script>
 <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/atom-one-dark.min.css">
+<script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/highlight.min.js"></script>
 <style>
 /* ===== RESET & BASE ===== */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -189,6 +191,20 @@ input[type=range] { flex: 1; height: 4px; accent-color: #3b82f6; cursor: pointer
 .nav-home-icon { font-size: 1.3rem; }
 .nav-home-label { font-size: 0.75rem; font-weight: 600; color: #64748b; }
 .nav-spacer { min-width: 160px; max-width: 260px; visibility: hidden; }
+
+/* ===== CODE BLOCKS ===== */
+pre.code-pre { position: relative; border-radius: 8px; margin: 10px 0; overflow: hidden; }
+pre.code-pre .hljs { display: block; padding: 18px 20px; border-radius: 8px; font-size: 0.82rem; line-height: 1.75; font-family: 'Fira Code', 'Cascadia Code', 'Consolas', monospace; overflow-x: auto; }
+.copy-btn {
+  position: absolute; top: 8px; right: 8px;
+  background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.18);
+  color: #abb2bf; border-radius: 6px; padding: 4px 11px;
+  font-size: 0.71rem; font-family: inherit; cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+  display: flex; align-items: center; gap: 5px; z-index: 1;
+}
+.copy-btn:hover { background: rgba(255,255,255,0.16); color: #e2e8f0; }
+.copy-btn.copied { color: #4ade80; border-color: #4ade80; background: rgba(74,222,128,0.08); }
 
 /* Responsive */
 @media (max-width: 768px) {
@@ -488,6 +504,7 @@ function loadSection(id, ch, sub, sec) {
     const htmlContent = (CONTENT[id] ? CONTENT[id]() : _defaultContent(id, ch, sub, sec));
     area.innerHTML = htmlContent + buildPageNav(id);
     area.scrollTop = 0;
+    setupCodeBlocks();
 
     const ws = document.getElementById('welcome-screen');
     if (ws) ws.remove();
@@ -499,6 +516,29 @@ function loadSection(id, ch, sub, sec) {
     } else {
       if (CHART_INITS[id]) CHART_INITS[id]();
     }
+  });
+}
+
+function setupCodeBlocks() {
+  if (!window.hljs) return;
+  document.querySelectorAll('pre.code-pre code').forEach(el => hljs.highlightElement(el));
+  document.querySelectorAll('pre.code-pre').forEach(pre => {
+    if (pre.querySelector('.copy-btn')) return;
+    const btn = document.createElement('button');
+    btn.className = 'copy-btn';
+    btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg> 복사';
+    btn.onclick = () => {
+      const code = pre.querySelector('code');
+      navigator.clipboard.writeText(code ? code.innerText : pre.innerText).then(() => {
+        btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> 복사됨';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg> 복사';
+          btn.classList.remove('copied');
+        }, 2000);
+      });
+    };
+    pre.appendChild(btn);
   });
 }
 
