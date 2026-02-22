@@ -118,22 +118,22 @@ CONTENT['1.1.2'] = () => String.raw`
             <span style="font-size:0.82rem;color:#374151;">키(cm) · $\mathcal{N}(174,\,6^2)$</span>
           </div>
           <canvas id="continuous-chart" height="230"></canvas>
-          <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:10px;">
-            <div style="flex:1;min-width:110px;">
+          <div style="margin-top:10px;">
+            <div style="margin-bottom:8px;">
               <div class="ctrl-label">왼쪽 a = <span id="height-a-val">170</span> cm</div>
               <input type="range" id="height-a-slider" min="150" max="200" step="1" value="170"
-                oninput="updateHeightRange();">
+                style="width:100%;" oninput="updateHeightRange();">
             </div>
-            <div style="flex:1;min-width:110px;">
+            <div>
               <div class="ctrl-label">오른쪽 b = <span id="height-b-val">180</span> cm</div>
               <input type="range" id="height-b-slider" min="150" max="200" step="1" value="180"
-                oninput="updateHeightRange();">
+                style="width:100%;" oninput="updateHeightRange();">
             </div>
           </div>
           <div style="display:flex;gap:10px;margin-top:10px;align-items:stretch;">
             <div class="stat-card" style="flex:0 0 auto;min-width:100px;display:flex;flex-direction:column;justify-content:center;">
               <div class="label">P(a ≤ x ≤ b)</div>
-              <div class="value" id="height-prob">—</div>
+              <div class="value" id="height-prob" style="color:#ef4444;">—</div>
             </div>
             <div class="highlight-box purple" style="flex:1;margin:0;font-size:0.82rem;line-height:1.8;">
               ✅ $p(x)$ = <strong>밀도</strong> (면적이 확률)<br>
@@ -858,7 +858,7 @@ function init_discrete_continuous() {
         },
         x: {
           title: { display: true, text: '키 x (cm)' },
-          ticks: { maxTicksLimit: 8, callback: (v) => parseFloat(v).toFixed(0) }
+          ticks: { maxTicksLimit: 8, callback: function(v) { return Math.round(parseFloat(this.getLabelForValue(v))); } }
         }
       }
     }
