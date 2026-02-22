@@ -76,30 +76,85 @@ CONTENT['1.1.2'] = () => String.raw`
   <p>확률 분포는 확률 변수의 성질에 따라 두 가지로 나뉩니다.</p>
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0;">
     <div class="highlight-box">
-      <strong>이산 확률 분포</strong><br>
+      <strong>이산 확률 분포 (Discrete)</strong><br>
       확률 변수가 1, 2, 3처럼 딱 떨어지는 값을 취합니다.<br>
       예: 주사위, 동전 던지기
     </div>
     <div class="highlight-box purple">
-      <strong>연속 확률 분포</strong><br>
+      <strong>연속 확률 분포 (Continuous)</strong><br>
       확률 변수가 연속적인 실수값을 취합니다.<br>
       예: 키, 기온, 측정 오차
+    </div>
+  </div>
+  <p>두 분포의 가장 큰 차이는 <strong>$p(x)$의 의미</strong>입니다. 이산 분포에서 $p(x)$는 <em>확률 그 자체</em>이지만, 연속 분포에서 $p(x)$는 <em>확률 밀도(density)</em>로 적분해야 확률이 됩니다.</p>
+</div>
+
+<div class="section">
+  <div class="section-title"><span class="icon">📊</span> 이산과 연속 — 나란히 비교하기</div>
+  <p>슬라이더로 구간 $[a, b]$를 바꿔가며, 연속 분포에서 확률이 <strong>곡선 아래 면적</strong>임을 직접 확인하세요.</p>
+
+  <div class="interactive-panel">
+    <div class="panel-header">📊 그림 1-2 · 이산 확률 분포 vs 연속 확률 분포</div>
+    <div class="panel-body" style="flex-direction:column;gap:0;">
+      <div style="display:flex;gap:24px;flex-wrap:wrap;">
+
+        <!-- ===== LEFT: Discrete ===== -->
+        <div style="flex:1;min-width:260px;">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+            <span class="tag">이산(Discrete)</span>
+            <span style="font-size:0.82rem;color:#374151;">주사위 눈의 확률</span>
+          </div>
+          <canvas id="discrete-chart" height="230"></canvas>
+          <div class="highlight-box" style="margin-top:10px;font-size:0.82rem;line-height:1.8;">
+            ✅ $p(x)$ = <strong>확률</strong> (막대 높이 그 자체)<br>
+            $$\sum_{k=1}^{6} p(x_k) = 6 \times \tfrac{1}{6} = 1$$
+          </div>
+        </div>
+
+        <!-- ===== RIGHT: Continuous ===== -->
+        <div style="flex:1;min-width:260px;">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+            <span class="tag purple">연속(Continuous)</span>
+            <span style="font-size:0.82rem;color:#374151;">키(cm) · $\mathcal{N}(174,\,6^2)$</span>
+          </div>
+          <canvas id="continuous-chart" height="230"></canvas>
+          <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:10px;">
+            <div style="flex:1;min-width:110px;">
+              <div class="ctrl-label">왼쪽 a = <span id="height-a-val">170</span> cm</div>
+              <input type="range" id="height-a-slider" min="150" max="200" step="1" value="170"
+                oninput="updateHeightRange();">
+            </div>
+            <div style="flex:1;min-width:110px;">
+              <div class="ctrl-label">오른쪽 b = <span id="height-b-val">180</span> cm</div>
+              <input type="range" id="height-b-slider" min="150" max="200" step="1" value="180"
+                oninput="updateHeightRange();">
+            </div>
+          </div>
+          <div style="display:flex;gap:10px;margin-top:10px;align-items:stretch;">
+            <div class="stat-card" style="flex:0 0 auto;min-width:100px;display:flex;flex-direction:column;justify-content:center;">
+              <div class="label">P(a ≤ x ≤ b)</div>
+              <div class="value" id="height-prob">—</div>
+            </div>
+            <div class="highlight-box purple" style="flex:1;margin:0;font-size:0.82rem;line-height:1.8;">
+              ✅ $p(x)$ = <strong>밀도</strong> (면적이 확률)<br>
+              $$P(a \le x \le b) = \int_a^b p(x)\,dx$$
+            </div>
+          </div>
+        </div>
+
+      </div>
     </div>
   </div>
 </div>
 
 <div class="section">
-  <div class="section-title"><span class="icon">📈</span> 확률 밀도 함수 (PDF)</div>
-  <p>연속 확률 변수에서 $p(x)$는 <strong>확률 밀도(probability density)</strong>를 나타냅니다. 이때 "$x$가 어떤 구간 $[a, b]$에 있을 확률"은 곡선 아래 면적으로 계산됩니다.</p>
-  <div class="math-block">
-    $$P(a \le x \le b) = \int_a^b p(x)\, dx$$
+  <div class="section-title"><span class="icon">⚠️</span> 확률 밀도에서 주의할 점</div>
+  <div class="highlight-box amber">
+    <strong>$p(x) > 1$ 이 될 수 있습니다!</strong> 연속 확률 변수에서 $p(x)$는 확률이 아닌 <em>밀도</em>입니다.
+    예컨대 $\sigma = 0.1$인 정규 분포의 최댓값은 $\approx 3.99$입니다. 그러나 전체 면적의 합은 항상 1입니다.
   </div>
-  <p>연속 확률 분포도 성립 조건이 있습니다:</p>
   <div class="math-block">
     $$p(x) \ge 0, \qquad \int_{-\infty}^{\infty} p(x)\, dx = 1$$
-  </div>
-  <div class="highlight-box amber">
-    <strong>주의:</strong> 연속 확률 변수에서 $p(x)$는 확률이 아닌 <em>밀도</em>입니다. $p(x) > 1$이 될 수도 있습니다! 확률은 항상 적분으로 구합니다.
   </div>
 </div>
 
@@ -654,6 +709,7 @@ CONTENT['1.5.1'] = () => String.raw`
    CHART INIT REGISTRATIONS
    ============================================================ */
 CHART_INITS['1.1.1'] = init_dice;
+CHART_INITS['1.1.2'] = init_discrete_continuous;
 CHART_INITS['1.2.2'] = init_normal_basic;
 CHART_INITS['1.2.3'] = init_param_explorer;
 CHART_INITS['1.3.2'] = init_clt_sim;
@@ -710,6 +766,121 @@ window.resetDice = function() {
   diceFreq = [0,0,0,0,0,0]; diceTotal = 0;
   document.getElementById('dice-count').textContent = 0;
   if (diceChartInst) { diceChartInst.data.datasets[0].data = [0,0,0,0,0,0]; diceChartInst.update(); }
+};
+
+/* --- 1.1.2 Discrete vs Continuous --- */
+let discreteChart = null;
+let continuousChart = null;
+
+function init_discrete_continuous() {
+  // ---- Discrete: die (이산 확률 분포) ----
+  const ctx1 = document.getElementById('discrete-chart');
+  if (!ctx1) return;
+  discreteChart = new Chart(ctx1, {
+    type: 'bar',
+    data: {
+      labels: ['1', '2', '3', '4', '5', '6'],
+      datasets: [{
+        label: 'p(x)',
+        data: [1/6, 1/6, 1/6, 1/6, 1/6, 1/6],
+        backgroundColor: [
+          'rgba(59,130,246,0.75)', 'rgba(79,112,234,0.75)', 'rgba(99,102,241,0.75)',
+          'rgba(99,102,241,0.75)', 'rgba(79,112,234,0.75)', 'rgba(59,130,246,0.75)'
+        ],
+        borderColor: '#3b82f6',
+        borderWidth: 1.5,
+        borderRadius: 4,
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: ctx => `p(${ctx.label}) = 1/6 ≈ ${(1/6).toFixed(4)}` } },
+        annotation: {}
+      },
+      scales: {
+        y: {
+          title: { display: true, text: '확률 p(x)' },
+          min: 0, max: 0.28,
+          ticks: { callback: v => v.toFixed(2) }
+        },
+        x: { title: { display: true, text: '주사위 눈 x' } }
+      }
+    }
+  });
+  activeChartInstances['discrete'] = discreteChart;
+
+  // ---- Continuous: height N(174, 6²) (연속 확률 분포) ----
+  const ctx2 = document.getElementById('continuous-chart');
+  if (!ctx2) return;
+  const MU = 174, SIGMA = 6;
+  const xs = linspace(150, 200, 300);
+  const ys = xs.map(x => normalPDF(x, MU, SIGMA));
+
+  continuousChart = new Chart(ctx2, {
+    type: 'line',
+    data: {
+      labels: xs.map(x => x.toFixed(1)),
+      datasets: [
+        {
+          label: '확률 밀도 p(x)',
+          data: ys,
+          borderColor: '#7c3aed',
+          borderWidth: 2.5,
+          fill: false,
+          pointRadius: 0,
+          tension: 0.4
+        },
+        {
+          label: '선택 구간',
+          data: new Array(300).fill(null),
+          backgroundColor: 'rgba(124,58,237,0.22)',
+          borderWidth: 0,
+          fill: true,
+          pointRadius: 0,
+          tension: 0.4,
+          spanGaps: false
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: ctx => `p(x) = ${ctx.raw !== null ? Number(ctx.raw).toFixed(5) : '—'}` } }
+      },
+      scales: {
+        y: {
+          title: { display: true, text: '확률 밀도 p(x)' },
+          min: 0,
+          ticks: { callback: v => v.toFixed(3) }
+        },
+        x: {
+          title: { display: true, text: '키 x (cm)' },
+          ticks: { maxTicksLimit: 8, callback: (v) => parseFloat(v).toFixed(0) }
+        }
+      }
+    }
+  });
+  activeChartInstances['continuous'] = continuousChart;
+  updateHeightRange();
+}
+
+window.updateHeightRange = function() {
+  if (!continuousChart) return;
+  const a = parseFloat(document.getElementById('height-a-slider').value);
+  const b = parseFloat(document.getElementById('height-b-slider').value);
+  const MU = 174, SIGMA = 6;
+  const xs = linspace(150, 200, 300);
+  const ys = xs.map(x => normalPDF(x, MU, SIGMA));
+  const lo = Math.min(a, b), hi = Math.max(a, b);
+  continuousChart.data.datasets[1].data = xs.map((x, i) => (x >= lo && x <= hi) ? ys[i] : null);
+  continuousChart.update('none');
+  document.getElementById('height-a-val').textContent = a;
+  document.getElementById('height-b-val').textContent = b;
+  const prob = numericalIntegral(lo, hi, x => normalPDF(x, MU, SIGMA), 500);
+  document.getElementById('height-prob').textContent = (prob * 100).toFixed(1) + '%';
 };
 
 /* --- 1.2.2 Normal basic with area --- */
