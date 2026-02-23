@@ -7,7 +7,7 @@
 <script>
 MathJax = {
   tex: { inlineMath: [['$','$']], displayMath: [['$$','$$']], tags: 'ams' },
-  options: { skipHtmlTags: ['script','noscript','style','textarea'] }
+  options: { skipHtmlTags: ['script','noscript','style','textarea','pre','code'] }
 };
 </script>
 <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
@@ -524,7 +524,6 @@ function loadSection(id, ch, sub, sec) {
     const htmlContent = (CONTENT[id] ? CONTENT[id]() : _defaultContent(id, ch, sub, sec));
     area.innerHTML = htmlContent + buildPageNav(id);
     area.scrollTop = 0;
-    setupCodeBlocks();
 
     const ws = document.getElementById('welcome-screen');
     if (ws) ws.remove();
@@ -532,9 +531,11 @@ function loadSection(id, ch, sub, sec) {
     if (window.MathJax) {
       MathJax.typesetPromise([area]).then(() => {
         if (CHART_INITS[id]) CHART_INITS[id]();
+        setupCodeBlocks();
       });
     } else {
       if (CHART_INITS[id]) CHART_INITS[id]();
+      setupCodeBlocks();
     }
   });
 }
