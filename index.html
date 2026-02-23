@@ -198,7 +198,9 @@ input[type=range] { flex: 1; height: 4px; accent-color: #3b82f6; cursor: pointer
 
 /* ===== CODE BLOCKS ===== */
 pre.code-pre { position: relative; border-radius: 8px; margin: 10px 0; overflow: hidden; }
-pre.code-pre .hljs { display: block; padding: 18px 20px; border-radius: 8px; font-size: 0.82rem; line-height: 1.75; font-family: 'Fira Code', 'Cascadia Code', 'Consolas', monospace; overflow-x: auto; }
+pre.code-pre .hljs { display: block; padding: 14px 0; border-radius: 8px; font-size: 0.82rem; line-height: 1.75; font-family: 'Fira Code', 'Cascadia Code', 'Consolas', monospace; overflow-x: auto; }
+.hlpy-line { display: block; padding: 0 18px 0 56px; position: relative; min-width: max-content; }
+.hlpy-line::before { content: attr(data-ln); position: absolute; left: 0; width: 40px; text-align: right; padding-right: 10px; color: #5c6370; border-right: 1px solid #3e4451; user-select: none; pointer-events: none; box-sizing: border-box; }
 .copy-btn {
   position: absolute; top: 8px; right: 8px;
   background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.18);
@@ -542,7 +544,14 @@ function loadSection(id, ch, sub, sec) {
 
 function setupCodeBlocks() {
   if (!window.hljs) return;
-  document.querySelectorAll('pre.code-pre code').forEach(el => hljs.highlightElement(el));
+  document.querySelectorAll('pre.code-pre code').forEach(el => {
+    hljs.highlightElement(el);
+    const lines = el.innerHTML.split('\n');
+    if (lines[lines.length - 1] === '') lines.pop();
+    el.innerHTML = lines.map((l, i) =>
+      `<span class="hlpy-line" data-ln="${i + 1}">${l || ' '}</span>`
+    ).join('');
+  });
   document.querySelectorAll('pre.code-pre').forEach(pre => {
     if (pre.querySelector('.copy-btn')) return;
     const btn = document.createElement('button');
