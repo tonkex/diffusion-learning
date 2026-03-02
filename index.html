@@ -277,7 +277,25 @@ const NAV = [
           { id:'1.5.1', title:'측정 오차·제품·키' },
       ]},
   ]},
-  { id:2,  title:'최대 가능도 추정',  subs:[] },
+  { id:2, title:'최대 가능도 추정', subs:[
+      { id:'2.1', title:'2.1 생성 모델 개요', sections:[
+          { id:'2.1.1', title:'생성 모델의 목표' },
+          { id:'2.1.2', title:'모집단과 샘플' },
+      ]},
+      { id:'2.2', title:'2.2 생성 모델 구현', sections:[
+          { id:'2.2.1', title:'키 데이터셋 불러오기' },
+          { id:'2.2.2', title:'정규 분포로 모델링' },
+      ]},
+      { id:'2.3', title:'2.3 MLE 이론', sections:[
+          { id:'2.3.1', title:'가능도 최대화' },
+          { id:'2.3.2', title:'미분으로 최댓값 찾기' },
+          { id:'2.3.3', title:'정규 분포의 MLE 유도' },
+      ]},
+      { id:'2.4', title:'2.4 생성 모델의 용도', sections:[
+          { id:'2.4.1', title:'새로운 데이터 생성' },
+          { id:'2.4.2', title:'확률 계산' },
+      ]},
+  ]},
   { id:3,  title:'다변량 정규 분포',  subs:[] },
   { id:4,  title:'가우스 혼합 모델',  subs:[] },
   { id:5,  title:'EM 알고리즘',       subs:[] },
