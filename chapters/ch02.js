@@ -57,13 +57,13 @@ CONTENT['2.1.1'] = () => String.raw`
       <strong>② 매개변수 추정 (Estimation)</strong><br><br>
       샘플 데이터에 가장 잘 부합하도록 매개변수를 추정합니다.<br><br>
       <strong>이 챕터의 핵심:</strong><br>
-      최대 가능도 추정(MLE)으로 $\hat{\mu}$, $\hat{\sigma}$ 추정
+      최대 가능도 추정(MLE, Maximum Likelihood Estimation)으로 $\hat{\mu}$, $\hat{\sigma}$ 추정
     </div>
   </div>
   <div class="steps">
     <div class="step active"><div class="step-num">1</div>데이터 수집</div>
     <div class="step active"><div class="step-num">2</div>모델링 선택<br><small>(정규분포 가정)</small></div>
-    <div class="step active"><div class="step-num">3</div>매개변수 추정<br><small>(MLE)</small></div>
+    <div class="step active"><div class="step-num">3</div>매개변수 추정<br><small>(MLE, Maximum<br>Likelihood Estimation)</small></div>
     <div class="step active"><div class="step-num">4</div>새 데이터 생성</div>
   </div>
 </div>
@@ -81,14 +81,16 @@ CONTENT['2.1.1'] = () => String.raw`
   <div class="highlight-box amber">
     <strong>핵심 과제:</strong> 샘플 데이터 $\mathcal{D} = \{x^{(1)}, \ldots, x^{(N)}\}$가 주어졌을 때,
     이를 가장 잘 설명하는 $\hat{\mu}$와 $\hat{\sigma}$를 어떻게 찾을까?<br>
-    → <strong>최대 가능도 추정(MLE)</strong>을 사용합니다.
+    → <strong>최대 가능도 추정(MLE, Maximum Likelihood Estimation)</strong>을 사용합니다.
   </div>
 </div>
 
 <div class="section">
   <div class="section-title"><span class="icon">🌍</span> 정규 분포로 모델링하는 이유</div>
   <ul class="content-list">
-    <li><strong>중심극한정리:</strong> 많은 독립적인 원인이 합쳐진 현상은 정규 분포에 근사 (1장에서 학습)</li>
+    <li><strong>중심극한정리:</strong> 많은 독립적인 원인이 합쳐진 현상은 정규 분포에 근사
+      <a href="#" class="ch-link" onclick="(function(){var s=FLAT_SECTIONS.find(function(x){return x.id==='1.3.1';});if(s)loadSection(s.id,s.ch,s.sub,s.sec);})();return false;">→ Ch.1.3 중심극한정리</a>
+    </li>
     <li><strong>계산의 편리함:</strong> 수학적으로 다루기 쉬운 성질을 많이 가짐</li>
     <li><strong>자연 현상과의 부합:</strong> 키, 몸무게, 혈압 등 많은 실제 데이터가 정규 분포에 근사</li>
   </ul>
@@ -125,7 +127,7 @@ CONTENT['2.1.2'] = () => String.raw`
   <ul class="content-list">
     <li><strong>모집단 분포 $p^*(x)$:</strong> 샘플을 뒷받침하는 실제 확률 분포. 현실적으로 알 수 없음.</li>
     <li><strong>모델링:</strong> $p^*(x)$를 매개변수로 조정 가능한 확률 분포 $p(x;\theta)$로 근사.</li>
-    <li><strong>매개변수 추정:</strong> 샘플 데이터에 가장 잘 부합하는 $\hat{\theta}$를 찾음 (MLE).</li>
+    <li><strong>매개변수 추정:</strong> 샘플 데이터에 가장 잘 부합하는 $\hat{\theta}$를 찾음 (MLE, Maximum Likelihood Estimation).</li>
   </ul>
   <div class="math-block">$$p^*(x) \approx p(x;\,\hat{\theta})$$</div>
   <p class="formula-label">모집단 분포 ≈ 추정된 분포 (매개변수 $\hat{\theta}$로 결정)</p>
@@ -344,7 +346,7 @@ plt.show()</code></pre>
 <div class="section">
   <div class="section-title"><span class="icon">🎛️</span> 인터랙티브 피팅 데모</div>
   <p>슬라이더로 $\mu$와 $\sigma$를 조정하면서 히스토그램에 정규 분포를 맞춰보세요.<br>
-  <strong>MLE 최적값 적용</strong> 버튼을 누르면 최대 가능도 추정값으로 자동 설정됩니다.</p>
+  <strong>MLE(Maximum Likelihood Estimation) 최적값 적용</strong> 버튼을 누르면 최대 가능도 추정값으로 자동 설정됩니다.</p>
   <div class="interactive-panel">
     <div class="panel-header">🎯 정규 분포 피팅 — 히스토그램 + 추정 PDF</div>
     <div class="panel-body" style="flex-direction:column;gap:14px;">
@@ -461,7 +463,7 @@ CONTENT['2.3.1'] = () => String.raw`
 </div>
 
 <div class="section">
-  <div class="section-title"><span class="icon">🔬</span> 인터랙티브: 가능도 탐색기 — MLE의 핵심 원리</div>
+  <div class="section-title"><span class="icon">🔬</span> 인터랙티브: 가능도 탐색기 — MLE(Maximum Likelihood Estimation)의 핵심 원리</div>
   <p>아래 5개 샘플 데이터에 대해 슬라이더로 $\mu$를 조절하면서 로그 가능도가 어떻게 변하는지 관찰하세요.</p>
   <div class="highlight-box amber">
     <strong>탐구 과제:</strong> 로그 가능도 $\log L(\mu)$가 최대가 되는 $\mu$를 찾아보세요. <strong>샘플 평균</strong>과 어떤 관계가 있나요?
@@ -660,7 +662,7 @@ CONTENT['2.3.2'] = () => String.raw`
   <p>최댓값은 $\dfrac{dy}{dx} = 0$인 점:</p>
   <div class="math-block">$$-4x + 3 = 0 \quad \Leftrightarrow \quad x = \frac{3}{4} = 0.75$$</div>
   <div class="highlight-box green">
-    <strong>MLE에의 적용:</strong> 로그 가능도 $\log L(\theta)$를 $\theta$에 대해 미분하여 0으로 놓으면<br>
+    <strong>MLE(Maximum Likelihood Estimation)에의 적용:</strong> 로그 가능도 $\log L(\theta)$를 $\theta$에 대해 미분하여 0으로 놓으면<br>
     → 최대 가능도 추정값 $\hat{\theta}$ 도출
   </div>
 </div>
@@ -767,12 +769,15 @@ CHART_INITS['2.3.2'] = function () {
 
 /* ─────────────────────── 2.3.3 ─────────────────────── */
 CONTENT['2.3.3'] = () => String.raw`
-<div class="page-title">정규 분포의 MLE 유도</div>
+<div class="page-title">정규 분포의 MLE(Maximum Likelihood Estimation) 유도</div>
 <div class="page-subtitle">2.3 최대 가능도 추정 이론</div>
 
 <div class="section">
   <div class="section-title"><span class="icon">🧮</span> 로그 가능도 전개</div>
-  <p>정규 분포 $\mathcal{N}(x;\mu,\sigma)$에 대해 로그 가능도를 전개합니다:</p>
+  <p>정규 분포 $\mathcal{N}(x;\mu,\sigma)$에 대해 로그 가능도를 전개합니다.
+  (정규 분포의 기본 성질은
+  <a href="#" class="ch-link" onclick="(function(){var s=FLAT_SECTIONS.find(function(x){return x.id==='1.2.1';});if(s)loadSection(s.id,s.ch,s.sub,s.sec);})();return false;">→ Ch.1.2 정규분포</a>
+  참고)</p>
   <div class="math-block">
     $$\log p(\mathcal{D};\mu,\sigma)
     = \log \prod_{n=1}^N \frac{1}{\sqrt{2\pi}\,\sigma}\exp\!\left(-\frac{(x^{(n)}-\mu)^2}{2\sigma^2}\right)$$
@@ -793,7 +798,7 @@ CONTENT['2.3.3'] = () => String.raw`
     \qquad \therefore\; \boxed{\hat{\mu} = \frac{1}{N}\sum_{n=1}^N x^{(n)}}$$
   </div>
   <div class="highlight-box green">
-    결론: <strong>MLE 평균 추정값 $\hat{\mu}$는 샘플의 산술 평균</strong>과 일치합니다.
+    결론: <strong>MLE(Maximum Likelihood Estimation) 평균 추정값 $\hat{\mu}$는 샘플의 산술 평균</strong>과 일치합니다.
   </div>
 </div>
 
@@ -809,13 +814,13 @@ CONTENT['2.3.3'] = () => String.raw`
     \qquad \therefore\; \boxed{\hat{\sigma} = \sqrt{\frac{1}{N}\sum_{n=1}^N\!\bigl(x^{(n)}-\hat{\mu}\bigr)^2}}$$
   </div>
   <div class="highlight-box green">
-    결론: <strong>MLE 표준편차 추정값 $\hat{\sigma}$는 샘플의 표준편차</strong>와 일치합니다.
+    결론: <strong>MLE(Maximum Likelihood Estimation) 표준편차 추정값 $\hat{\sigma}$는 샘플의 표준편차</strong>와 일치합니다.
   </div>
 </div>
 
 <div class="section">
-  <div class="section-title"><span class="icon">🔢</span> 인터랙티브: MLE 계산기</div>
-  <p>데이터를 직접 입력하면 MLE 방식으로 $\hat{\mu}$와 $\hat{\sigma}$를 계산합니다.</p>
+  <div class="section-title"><span class="icon">🔢</span> 인터랙티브: MLE(Maximum Likelihood Estimation) 계산기</div>
+  <p>데이터를 직접 입력하면 MLE(Maximum Likelihood Estimation) 방식으로 $\hat{\mu}$와 $\hat{\sigma}$를 계산합니다.</p>
   <div class="interactive-panel">
     <div class="panel-header">🧮 MLE 계산기</div>
     <div class="panel-body" style="flex-direction:column;gap:12px;">
@@ -911,7 +916,9 @@ plt.show()</code></pre>
       <canvas id="c241-chart" height="260"></canvas>
       <div class="highlight-box green" id="c241-msg" style="display:none;">
         생성된 데이터(주황색)와 원본 데이터(파란색)가 유사한 분포를 보입니다! 🎉<br>
-        더 복잡한 생성 모델(VAE, 확산모델 등)은 이미지도 생성할 수 있습니다.
+        더 복잡한 생성 모델은 이미지도 생성할 수 있습니다.
+        <a href="#" class="ch-link" onclick="toggleChapter(7,true);return false;">→ Ch.7 변이형 오토인코더(VAE)</a>
+        <a href="#" class="ch-link" onclick="toggleChapter(8,true);return false;">→ Ch.8 확산모델</a>
       </div>
     </div>
   </div>
@@ -972,7 +979,10 @@ CONTENT['2.4.2'] = () => String.raw`
 
 <div class="section">
   <div class="section-title"><span class="icon">📊</span> 생성 모델의 두 번째 용도: 확률 계산</div>
-  <p>확률 분포를 알면 <strong>특정 값이 얼마나 발생하기 쉬운지</strong> 정량적으로 계산할 수 있습니다. 연속 분포에서 특정 구간의 확률은 <strong>누적 분포 함수(CDF)</strong>를 이용합니다:</p>
+  <p>확률 분포를 알면 <strong>특정 값이 얼마나 발생하기 쉬운지</strong> 정량적으로 계산할 수 있습니다. 연속 분포에서 특정 구간의 확률은 <strong>누적 분포 함수(CDF)</strong>를 이용합니다.
+  (연속 분포와 확률 밀도의 개념은
+  <a href="#" class="ch-link" onclick="(function(){var s=FLAT_SECTIONS.find(function(x){return x.id==='1.1.2';});if(s)loadSection(s.id,s.ch,s.sub,s.sec);})();return false;">→ Ch.1.1.2 확률 분포의 종류</a>
+  참고)</p>
   <div class="math-block">
     $$P(X \le x) = \int_{-\infty}^{x} p(t;\,\hat{\mu},\,\hat{\sigma})\,dt = \Phi\!\left(\frac{x - \hat{\mu}}{\hat{\sigma}}\right)$$
   </div>
