@@ -502,21 +502,21 @@ CONTENT['2.3.1'] = () => String.raw`
           <div class="value" id="c231-delta" style="color:#ef4444;font-size:0.85rem;">—</div>
         </div>
       </div>
-      <div>
-        <div style="font-size:0.8rem;color:#64748b;margin-bottom:4px;">
-          <strong>① 확률 밀도 함수</strong> $\mathcal{N}(x;\mu,\;5.5^2)$
-          &nbsp;·&nbsp; 🔴 빨간점 = 각 데이터의 밀도값 $p(x^{(i)};\mu)$
-          &nbsp;·&nbsp; 🟣 점선 = 현재 μ 위치
+      <div style="display:flex;gap:16px;align-items:flex-start;">
+        <div style="flex:1;min-width:0;">
+          <div style="font-size:0.77rem;color:#64748b;margin-bottom:4px;line-height:1.55;">
+            <strong>① 확률 밀도 함수</strong> $\mathcal{N}(x;\mu,\;5.5^2)$<br>
+            🔴 빨간점 = $p(x^{(i)};\mu)$ &nbsp;·&nbsp; 🟣 점선 = 현재 μ
+          </div>
+          <canvas id="c231-pdf" height="230"></canvas>
         </div>
-        <canvas id="c231-pdf" height="200"></canvas>
-      </div>
-      <div>
-        <div style="font-size:0.8rem;color:#64748b;margin-bottom:4px;">
-          <strong>② 로그 가능도 프로파일</strong> $\log L(\mu)$
-          &nbsp;·&nbsp; 🔴 = 현재 μ
-          &nbsp;·&nbsp; 🟢 ★ = MLE 최적 μ (샘플 평균)
+        <div style="flex:1;min-width:0;">
+          <div style="font-size:0.77rem;color:#64748b;margin-bottom:4px;line-height:1.55;">
+            <strong>② 로그 가능도 프로파일</strong> $\log L(\mu)$<br>
+            🔴 = 현재 μ &nbsp;·&nbsp; 🟢★ = MLE 최적 μ (샘플 평균)
+          </div>
+          <canvas id="c231-logl-c" height="230"></canvas>
         </div>
-        <canvas id="c231-logl-c" height="160"></canvas>
       </div>
     </div>
   </div>
